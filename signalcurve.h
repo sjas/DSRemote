@@ -27,8 +27,8 @@
 
 
 
-#ifndef SIGNALCURVE_H
-#define SIGNALCURVE_H
+#ifndef DEF_SIGNALCURVE_H
+#define DEF_SIGNALCURVE_H
 
 
 #include <QtGlobal>

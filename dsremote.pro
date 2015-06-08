@@ -26,6 +26,7 @@ HEADERS += tled.h
 HEADERS += edflib.h
 HEADERS += signalcurve.h
 HEADERS += settings_dialog.h
+HEADERS += usbthreading.h
 
 SOURCES += main.cpp
 SOURCES += mainwindow.cpp
@@ -40,6 +41,7 @@ SOURCES += tled.cpp
 SOURCES += edflib.c
 SOURCES += signalcurve.cpp
 SOURCES += settings_dialog.cpp
+SOURCES += usbthreading.cpp
 
 RESOURCES = images.qrc
 

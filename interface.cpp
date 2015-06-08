@@ -131,10 +131,6 @@ void UI_Mainwindow::navDialChanged(int npos)
     strcat(str, "s");
 
     statusLabel->setText(str);
-
-//     sprintf(str, ":TRIG:HOLD %e", devparms.triggerholdoff);
-//
-//     tmcdev_write(device, str);
   }
   else if(devparms.timebasedelayenable)
     {
@@ -177,10 +173,6 @@ void UI_Mainwindow::navDialChanged(int npos)
       strcat(str, "s");
 
       statusLabel->setText(str);
-
-//       sprintf(str, ":TIM:DEL:OFFS %e", devparms.timebasedelayoffset);
-//
-//       tmcdev_write(device, str);
     }
 }
 

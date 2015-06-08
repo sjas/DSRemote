@@ -260,92 +260,54 @@ void UI_Mainwindow::scrn_timer_handler()
     return;
   }
 
-//struct waveform_preamble wfp;
-
-  for(i=0; i<MAX_CHNS; i++)
-  {
-    if(!devparms.chandisplay[i])  // Download data only when channel is switched on
-    {
-      continue;
-    }
-
-///////////////////////////////////////////////////////////
-
-//     tmcdev_write(device, ":WAV:PRE?");
+//   for(i=0; i<MAX_CHNS; i++)
+//   {
+//     if(!devparms.chandisplay[i])  // Download data only when channel is switched on
+//     {
+//       continue;
+//     }
+//
+//     sprintf(str, ":WAV:SOUR CHAN%i", i + 1);
+//
+//     tmcdev_write(device, str);
+//
+//     tmcdev_write(device, ":WAV:FORM BYTE");
+//
+//     tmcdev_write(device, ":WAV:MODE NORM");
+//
+//     tmcdev_write(device, ":WAV:DATA?");
 //
 //     n = tmcdev_read(device);
 //
 //     if(n < 0)
 //     {
-//       strcpy(str, "Can not read from device.");
-//       goto OUT_ERROR;
+//       printf("Can not read from device.\n");
+//       return;
 //     }
 //
-//     printf("waveform preamble: %s\n", device->buf);
-//
-//     if(parse_preamble(device->buf, device->sz, &wfp, i))
+//     if(n > WAVFRM_MAX_BUFSZ)
 //     {
-//       strcpy(str, "Preamble parsing error.");
+//       strcpy(str, "Datablock too big for buffer.");
 //       goto OUT_ERROR;
 //     }
 //
-//     printf("waveform preamble:\n"
-//            "format: %i\n"
-//            "type: %i\n"
-//            "points: %i\n"
-//            "count: %i\n"
-//            "xincrement: %e\n"
-//            "xorigin: %e\n"
-//            "xreference: %e\n"
-//            "yincrement: %e\n"
-//            "yorigin: %e\n"
-//            "yreference: %i\n",
-//            wfp.format, wfp.type, wfp.points, wfp.count,
-//            wfp.xincrement[i], wfp.xorigin[i], wfp.xreference[i],
-//            wfp.yincrement[i], wfp.yorigin[i], wfp.yreference[i]);
+//     if(n < 16)
+//     {
+//       return;
+//     }
 //
-//     printf("chanoffset[] is %e\n", devparms.chanoffset[i]);
+//     for(j=0; j<n; j++)
+//     {
+//       devparms.wavebuf[i][j] = (int)(((unsigned char *)device->buf)[j]) - 127;
+//     }
+//   }
 
-//     rec_len = wfp.xincrement[i] * wfp.points;
+//   if(usbworkerThread->isRunning() == false)
+//   {
+    usbworkerThread->tmcdev_getscreendata(device, &devparms);
+//   }
 
-///////////////////////////////////////////////////////////
-
-    sprintf(str, ":WAV:SOUR CHAN%i", i + 1);
-
-    tmcdev_write(device, str);
-
-    tmcdev_write(device, ":WAV:FORM BYTE");
-
-    tmcdev_write(device, ":WAV:MODE NORM");
-
-    tmcdev_write(device, ":WAV:DATA?");
-
-    n = tmcdev_read(device);
-
-    if(n < 0)
-    {
-      printf("Can not read from device.\n");
-      return;
-    }
-
-    if(n > WAVFRM_MAX_BUFSZ)
-    {
-      strcpy(str, "Datablock too big for buffer.");
-      goto OUT_ERROR;
-    }
-
-    if(n < 16)
-    {
-      return;
-    }
-
-    for(j=0; j<n; j++)
-    {
-      devparms.wavebuf[i][j] = (int)(((unsigned char *)device->buf)[j]) - 127;
-    }
-  }
-
-  waveForm->drawCurve(&devparms, device, n);
+//  waveForm->drawCurve(&devparms, device, n);
 
   return;
 
@@ -357,6 +319,17 @@ OUT_ERROR:
   msgBox.setIcon(QMessageBox::Critical);
   msgBox.setText(str);
   msgBox.exec();
+}
+
+
+void UI_Mainwindow::usbtmcReadyHandle()
+{
+}
+
+
+void UI_Mainwindow::usbtmcScrnReadyHandle()
+{
+  waveForm->drawCurve(&devparms, device, devparms.wavebufbufsz);
 }
 
 

@@ -208,7 +208,8 @@ void UI_Mainwindow::open_connection()
     ch2Button->setVisible(false);
   }
 
-  if(devparms.modelserie == 6)
+//  if(devparms.modelserie == 6)
+  if(1)
   {
     devparms.status_timer_ival = 100;
 

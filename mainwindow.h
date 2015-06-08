@@ -34,6 +34,7 @@
 #include <QApplication>
 #include <QtGui>
 #include <QWidget>
+#include <QObject>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
@@ -62,6 +63,7 @@
 #include <QSettings>
 #include <QProcess>
 #include <QProgressDialog>
+#include <QThread>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,6 +82,7 @@
 #include "edflib.h"
 #include "signalcurve.h"
 #include "settings_dialog.h"
+#include "usbthreading.h"
 
 
 
@@ -195,12 +198,17 @@ private:
 
   SignalCurve *waveForm;
 
+  usbtmcThread *usbworkerThread;
+
   int parse_preamble(char *, int, struct waveform_preamble *, int);
   int get_metric_factor(double);
   void get_device_model(const char *);
   double get_stepsize_divide_by_1000(double);
 
 private slots:
+
+  void usbtmcReadyHandle();
+  void usbtmcScrnReadyHandle();
 
   void scrn_timer_handler();
   void stat_timer_handler();

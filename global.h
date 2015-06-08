@@ -128,6 +128,7 @@ struct device_settings
 
   char *screenshot_buf;
   short *wavebuf[MAX_CHNS];
+  int wavebufbufsz;
 
   int status_timer_ival;        // in milli-Sec.
   int screen_timer_ival;        // in milli-Sec.

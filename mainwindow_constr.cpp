@@ -77,6 +77,8 @@ UI_Mainwindow::UI_Mainwindow()
 
   devparms.screen_timer_ival = 2000;
 
+  usbworkerThread = new usbtmcThread;
+
   menubar = menuBar();
 
   devicemenu = new QMenu;
@@ -362,6 +364,8 @@ UI_Mainwindow::UI_Mainwindow()
   connect(navDial_timer, SIGNAL(timeout()),        this, SLOT(navDial_timer_handler()));
   connect(test_timer,    SIGNAL(timeout()),        this, SLOT(test_timer_handler()));
 
+  connect(usbworkerThread, SIGNAL(usbtmcScrnReady()), this, SLOT(usbtmcScrnReadyHandle()));
+
 ///// TEST /////////////////////////////////////
 //   DPRwidget->setEnabled(true);
 //
@@ -409,6 +413,10 @@ UI_Mainwindow::UI_Mainwindow()
 UI_Mainwindow::~UI_Mainwindow()
 {
   QSettings settings;
+
+  usbworkerThread->wait(6000);
+
+  delete usbworkerThread;
 
   settings.setValue("path/savedir", recent_savedir);
 
